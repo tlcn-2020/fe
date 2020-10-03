@@ -14,9 +14,8 @@ jobs:
       - name: Install deps
         run: npm install
 
-      - name: Build and create .nojekyll  file
-        run: |
-          npm run build
+      - name: Build
+        run: npm run build
 
       - name: Deploy👌
         uses: JamesIves/github-pages-deploy-action@3.6.2
