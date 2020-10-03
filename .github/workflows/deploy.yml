@@ -1,0 +1,27 @@
+name: Deploy app to gh page
+
+on: push
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install deps
+        run: npm install
+
+      - name: Build and create .nojekyll  file
+        run: |
+          npm run build
+
+      - name: Deploy👌
+        uses: JamesIves/github-pages-deploy-action@3.6.2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: build
+          CLEAN: true
