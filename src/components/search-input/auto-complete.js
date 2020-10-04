@@ -8,13 +8,13 @@ import {
   ListItemIcon,
   Avatar,
 } from "@material-ui/core";
-import MOVIES_DATA from "../data/movies";
+import MOVIES_DATA from "../../data/movies";
 
 const useStyles = makeStyles((theme) => ({
   container: {
     width: "80ch",
     overflow: "auto",
-    maxHeight: 500,
+    maxHeight: 300,
     margin: "0 auto",
     backgroundColor: fade(theme.palette.common.white, 0.15),
     borderRadius: "1rem",
@@ -22,6 +22,8 @@ const useStyles = makeStyles((theme) => ({
     borderTopLeftRadius: 0,
     borderTop: "none",
     borderTopRightRadius: 0,
+    position: "absolute",
+    zIndex: 1,
   },
   movieItem: {
     cursor: "pointer",
