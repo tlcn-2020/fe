@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Container, Typography, makeStyles } from "@material-ui/core";
 import { indigo } from "@material-ui/core/colors";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import SearchInput from "../components/search-input";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,20 +24,29 @@ function Main({ history }) {
   const [search, setSearch] = useState("");
   // HOOK
   const classes = useStyles();
-  function handleNavigateToSearch(e) {
-    if (e.keyCode === 13) {
-      history.push(`/search?q=${search}`);
-    }
-  }
+
+  const handleNavigateToSearch = useCallback(
+    (e) => {
+      if (e.keyCode === 13) {
+        history.push(`/search?q=${search}`);
+      }
+    },
+    [search]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleNavigateToSearch);
+    return () => {
+      window.removeEventListener("keydown", handleNavigateToSearch);
+    };
+  });
+
   return (
     <Container className={classes.container}>
       <Typography variant="h2" align="center" className={classes.header}>
         Movie Searcher
       </Typography>
-      <SearchInput
-        onKeyDown={handleNavigateToSearch}
-        onChange={(value) => setSearch(value)}
-      />
+      <SearchInput onChange={(value) => setSearch(value)} />
     </Container>
   );
 }

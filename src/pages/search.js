@@ -1,6 +1,7 @@
 import { Container, makeStyles, Typography } from "@material-ui/core";
 import { indigo } from "@material-ui/core/colors";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import MovieList from "../components/movie-list";
 import SearchInput from "../components/search-input";
 
@@ -14,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     color: indigo[500],
     marginRight: theme.spacing(2),
+    "& a": {
+      textDecoration: "none !important",
+    },
   },
 }));
 
@@ -30,7 +34,7 @@ const Search = ({ location }) => {
     <Container>
       <header className={classes.header}>
         <Typography variant="h4" className={classes.title}>
-          Movie Searcher
+          <Link to="/">Movie Searcher</Link>
         </Typography>
         <SearchInput
           value={search}

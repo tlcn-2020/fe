@@ -8,19 +8,19 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import React from "react";
-import Truncate from "@konforti/react-truncate";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import MOVIES_DATA from "../../data/movies";
+import { Rating } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
     flexWrap: "wrap",
-    justifyContent: "space-between",
+    flexDirection: "column",
+    maxHeight: 1100,
   },
   movie: {
     width: "250px",
-    cursor: "pointer",
     margin: theme.spacing(2, 0),
     padding: theme.spacing(1),
     transition: "transform 0.5s ease",
@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MovieList = ({ search }) => {
+  //HOOK
   const classes = useStyles();
   const filterMovies = MOVIES_DATA.filter((movie) =>
     movie.title.toLowerCase().includes(search.toLowerCase())
@@ -56,15 +57,14 @@ const MovieList = ({ search }) => {
       {filterMovies.map((movie) => (
         <Card key={movie.id} className={classes.movie}>
           <CardHeader subheader={movie.releaseDate} title={movie.title} />
+          <Rating value={2} disabled />
           <CardMedia
             title={movie.title}
             image={movie.posterurl}
             className={classes.media}
           />
           <CardContent>
-            <Truncate truncFrom="end" lines={3} ellipsis="... ">
-              {movie.storyline.length ? movie.storyline : "No descriptions"}
-            </Truncate>
+            {movie.storyline.length ? movie.storyline : "No descriptions"}
           </CardContent>
           <CardActions disableSpacing>
             <IconButton>

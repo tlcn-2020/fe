@@ -2,7 +2,7 @@
 import { makeStyles, InputBase, fade, Box } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { indigo } from "@material-ui/core/colors";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import MyAutoComplete from "./auto-complete";
 
 const useStyles = makeStyles((theme) => ({
@@ -51,18 +51,37 @@ function SearchInput({ value = "", onChange, onKeyDown, styleProp }) {
   //STATE
   const [search, setSearch] = useState(value);
   const [didSearch, setDidSearch] = useState(false);
+  const [showAutocomplete, setShowAutocomplete] = useState(true);
   // HOOK
   const classes = useStyles(styleProp);
-
+  const turnOffAutoComplete = useCallback(() => {
+    setShowAutocomplete(false);
+  });
   useEffect(() => {
     onChange && onChange(search);
   }, [search]);
 
+  useEffect(() => {
+    window.addEventListener("click", turnOffAutoComplete);
+    return () => {
+      window.removeEventListener("click", turnOffAutoComplete);
+    };
+  });
+
   return (
-    <Box className={classes.container}>
+    <Box
+      className={classes.container}
+      onClick={(e) => {
+        e.stopPropagation();
+        setShowAutocomplete(true);
+      }}
+    >
       <div
         className={`${classes.search} ${
-          search.length > 0 && didSearch && classes.hasSearchValue
+          search.length > 0 &&
+          didSearch &&
+          showAutocomplete &&
+          classes.hasSearchValue
         }`}
       >
         <div className={classes.searchIcon}>
@@ -85,7 +104,9 @@ function SearchInput({ value = "", onChange, onKeyDown, styleProp }) {
           }}
         />
       </div>
-      {search.length > 0 && didSearch && <MyAutoComplete search={search} />}
+      {search.length > 0 && didSearch && showAutocomplete && (
+        <MyAutoComplete search={search} />
+      )}
     </Box>
   );
 }
