@@ -11,37 +11,24 @@ import React from "react";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import MOVIES_DATA from "../../data/movies";
 import { Rating } from "@material-ui/lab";
+import Masonry from "react-masonry-component";
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    display: "flex",
-    flexWrap: "wrap",
-    flexDirection: "column",
-    maxHeight: 1100,
-  },
   movie: {
-    width: "250px",
+    width: "20%",
     margin: theme.spacing(2, 0),
     padding: theme.spacing(1),
     transition: "transform 0.5s ease",
     "&:hover": {
       transform: "scale(1.1)",
     },
+    [theme.breakpoints.down("sm")]: {
+      width: "30%",
+    },
   },
   media: {
     height: 250,
-
     backgroundPosition: "center",
-  },
-  expand: {
-    transform: "rotate(0deg)",
-    marginLeft: "auto",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: "rotate(180deg)",
   },
 }));
 
@@ -53,14 +40,17 @@ const MovieList = ({ search }) => {
   );
 
   return (
-    <div className={classes.container}>
+    <Masonry>
       {filterMovies.map((movie) => (
-        <Card key={movie.id} className={classes.movie}>
+        <Card key={movie.title} className={classes.movie}>
           <CardHeader subheader={movie.releaseDate} title={movie.title} />
-          <Rating value={2} disabled />
+          <Rating value={2} disabled name="rating" />
           <CardMedia
             title={movie.title}
-            image={movie.posterurl}
+            image={
+              movie.posterurl ||
+              process.env.PUBLIC_URL + "/images/placeholder.png"
+            }
             className={classes.media}
           />
           <CardContent>
@@ -73,7 +63,7 @@ const MovieList = ({ search }) => {
           </CardActions>
         </Card>
       ))}
-    </div>
+    </Masonry>
   );
 };
 

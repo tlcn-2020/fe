@@ -42,7 +42,7 @@ const MyAutoComplete = ({ search }) => {
     <List className={classes.container}>
       {filterMovies.length > 0 ? (
         filterMovies.map((movie) => (
-          <ListItem key={movie.id} className={classes.movieItem}>
+          <ListItem key={movie.title} className={classes.movieItem}>
             <ListItemIcon>
               <Avatar src={movie.posterurl} alt={movie.title}>
                 {movie.title}
