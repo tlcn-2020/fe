@@ -47,9 +47,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SearchInput({ onChange, onKeyDown, styleProp }) {
+function SearchInput({ value = "", onChange, onKeyDown, styleProp }) {
   //STATE
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(value);
+  const [didSearch, setDidSearch] = useState(false);
   // HOOK
   const classes = useStyles(styleProp);
 
@@ -61,28 +62,30 @@ function SearchInput({ onChange, onKeyDown, styleProp }) {
     <Box className={classes.container}>
       <div
         className={`${classes.search} ${
-          search.length > 0 && classes.hasSearchValue
+          search.length > 0 && didSearch && classes.hasSearchValue
         }`}
       >
         <div className={classes.searchIcon}>
           <SearchIcon />
         </div>
         <InputBase
-          onKeyDown={(e) => {
-            onKeyDown && onKeyDown(e);
-          }}
           placeholder="Search…"
           classes={{
             root: classes.inputRoot,
             input: classes.inputInput,
           }}
           inputProps={{ "aria-label": "search" }}
+          value={search}
           onChange={(e) => {
             setSearch(e.target.value);
+            setDidSearch(true);
+          }}
+          onKeyDown={(e) => {
+            onKeyDown && onKeyDown(e);
           }}
         />
       </div>
-      {search.length > 0 && <MyAutoComplete search={search} />}
+      {search.length > 0 && didSearch && <MyAutoComplete search={search} />}
     </Box>
   );
 }

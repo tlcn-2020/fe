@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     maxHeight: 300,
     margin: "0 auto",
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    backgroundColor: theme.palette.common.white,
     borderRadius: "1rem",
     border: "1px solid #ccc",
     borderTopLeftRadius: 0,

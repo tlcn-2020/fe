@@ -1,6 +1,7 @@
 import { Container, makeStyles, Typography } from "@material-ui/core";
 import { indigo } from "@material-ui/core/colors";
-import React from "react";
+import React, { useState } from "react";
+import MovieList from "../components/movie-list";
 import SearchInput from "../components/search-input";
 
 const useStyles = makeStyles((theme) => ({
@@ -8,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     padding: theme.spacing(1),
+    borderBottom: "1px solid #eee",
   },
   title: {
     color: indigo[500],
@@ -15,16 +17,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Search = () => {
+const Search = ({ location }) => {
+  const searchParams = new URLSearchParams(location.search);
+  const query = searchParams.get("q") || "";
+
+  //STATE
+  const [search, setSearch] = useState(query);
+  //HOOK
   const classes = useStyles();
+
   return (
     <Container>
       <header className={classes.header}>
-        <Typography variant="h5" className={classes.title}>
+        <Typography variant="h4" className={classes.title}>
           Movie Searcher
         </Typography>
-        <SearchInput />
+        <SearchInput
+          value={search}
+          onChange={(value) => {
+            setSearch(value);
+          }}
+        />
       </header>
+      <main>
+        {search.length > 0 && (
+          <Typography variant="h6">Search results for: {search}</Typography>
+        )}
+        {search.length > 0 && <MovieList search={search} />}
+      </main>
     </Container>
   );
 };
