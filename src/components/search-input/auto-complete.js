@@ -9,6 +9,7 @@ import {
   Avatar,
 } from "@material-ui/core";
 import MOVIES_DATA from "../../data/movies";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -34,7 +35,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MyAutoComplete = ({ search }) => {
+  //HOOK
   const classes = useStyles();
+  const history = useHistory();
+
+  //FUNCTION
   const filterMovies = MOVIES_DATA.filter((movie) =>
     movie.title.toLowerCase().includes(search.toLowerCase())
   );
@@ -42,7 +47,13 @@ const MyAutoComplete = ({ search }) => {
     <List className={classes.container}>
       {filterMovies.length > 0 ? (
         filterMovies.map((movie) => (
-          <ListItem key={movie.title} className={classes.movieItem}>
+          <ListItem
+            key={movie.title}
+            className={classes.movieItem}
+            onClick={() => {
+              history.push(`/search-detail/${movie.id}`);
+            }}
+          >
             <ListItemIcon>
               <Avatar src={movie.posterurl} alt={movie.title}>
                 {movie.title}

@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Search = ({ location }) => {
+const Search = ({ location, history }) => {
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get("q") || "";
 
@@ -47,7 +47,7 @@ const Search = ({ location }) => {
         {search.length > 0 && (
           <Typography variant="h6">Search results for: {search}</Typography>
         )}
-        {search.length > 0 && <MovieList search={search} />}
+        {search.length > 0 && <MovieList search={search} history={history} />}
       </main>
     </Container>
   );
