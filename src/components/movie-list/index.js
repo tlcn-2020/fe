@@ -47,7 +47,7 @@ const MovieList = ({ movies = [], history }) => {
           <Rating
             max={10}
             value={parseInt(movie.imdb) || 0}
-            disabled
+            readOnly
             name="rating"
           />
           <CardMedia

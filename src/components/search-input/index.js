@@ -3,7 +3,6 @@ import { makeStyles, InputBase, fade, Box } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { indigo } from "@material-ui/core/colors";
 import React, { Suspense, useCallback, useEffect, useState } from "react";
-import { debounce } from "lodash";
 import MyAutoComplete from "./auto-complete";
 import { postRequest } from "../../api";
 
@@ -67,12 +66,9 @@ function SearchInput({
   const turnOffAutoComplete = useCallback(() => {
     setShowAutocomplete(false);
   });
-  const callOuterOnChange = useCallback(
-    debounce(() => {
-      onChange && onChange(search);
-    }, [500]),
-    [search]
-  );
+  const callOuterOnChange = useCallback(() => {
+    onChange && onChange(search);
+  }, [search]);
 
   const searchFunc = useCallback(async () => {
     const res = await postRequest("/search", { name: search });
@@ -80,7 +76,7 @@ function SearchInput({
       setMovies(res.data);
       onChangeMovie && onChangeMovie(res.data);
     }
-    console.log(res);
+
   }, [search]);
 
   const handleChange = useCallback((e) => {

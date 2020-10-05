@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Container, makeStyles, Typography } from "@material-ui/core";
 import { indigo } from "@material-ui/core/colors";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MovieList from "../components/movie-list";
 import SearchInput from "../components/search-input";
@@ -30,6 +31,10 @@ const Search = ({ location, history }) => {
   const [movies, setMovies] = useState([]);
   //HOOK
   const classes = useStyles();
+
+  useEffect(() => {
+    history.push(`/search?q=${search}`);
+  }, [search]);
 
   return (
     <Container>
