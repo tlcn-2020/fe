@@ -10,7 +10,6 @@ import React from "react";
 import { indigo, red } from "@material-ui/core/colors";
 import Image from "material-ui-image";
 import { isEmpty } from "lodash";
-import MOVIES_DATA from "../data/movies";
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -36,8 +35,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function MovieDetail({ match }) {
-  const movieId = match.params.movieId;
-  const movie = MOVIES_DATA.filter((movie) => movie["_id"] === movieId)[0];
+  //const movieId = match.params.movieId;
+  const movie = null;
+  console.log(movie);
   const classes = useStyles();
 
   return (
