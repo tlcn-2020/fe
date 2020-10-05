@@ -2,11 +2,14 @@ import axios from "axios";
 
 const baseURL =
   process.env.NODE_ENV === "production"
-    ? "https://t-connect-backend.koreasouth.cloudapp.azure.com/search/"
+    ? "https://t-connect-backend.koreasouth.cloudapp.azure.com/movies/"
     : "http://localhost:5000/";
 
 const myAxios = axios.create({
   baseURL,
+  headers: {
+    "content-type": "application/json",
+  },
 });
 
 export async function postRequest(url, body) {
