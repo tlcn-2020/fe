@@ -54,17 +54,25 @@ function SearchInput({ value = "", onChange, onKeyDown, styleProp }) {
   const [search, setSearch] = useState(value);
   const [didSearch, setDidSearch] = useState(false);
   const [showAutocomplete, setShowAutocomplete] = useState(true);
-  // HOOK
-  const classes = useStyles(styleProp);
+
+  //FUNCTION
   const turnOffAutoComplete = useCallback(() => {
     setShowAutocomplete(false);
   });
-  const callOuterOnChange = debounce(
-    useCallback(() => {
+  const callOuterOnChange = useCallback(
+    debounce(() => {
       onChange && onChange(search);
-    }),
-    [1000]
+    }, [500]),
+    [search]
   );
+
+  const handleChange = useCallback((e) => {
+    setSearch(e.target.value);
+    setDidSearch(true);
+  });
+
+  // HOOK
+  const classes = useStyles(styleProp);
   useEffect(() => {
     callOuterOnChange();
   }, [search]);
@@ -104,8 +112,7 @@ function SearchInput({ value = "", onChange, onKeyDown, styleProp }) {
           inputProps={{ "aria-label": "search" }}
           value={search}
           onChange={(e) => {
-            setSearch(e.target.value);
-            setDidSearch(true);
+            handleChange(e);
           }}
           onKeyDown={(e) => {
             onKeyDown && onKeyDown(e);

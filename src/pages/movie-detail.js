@@ -60,6 +60,11 @@ function MovieDetail({ match }) {
                 src={movie.image}
                 style={{ height: "100%" }}
               />
+              <Box position="absolute" bottom={0} margin={0.5}>
+                <Button variant="contained" className={classes.watchBtn}>
+                  Watch movie
+                </Button>
+              </Box>
             </div>
             <div className="intro">
               <h2 className="title">{movie.name}</h2>
@@ -92,11 +97,6 @@ function MovieDetail({ match }) {
             <h2>Description</h2>
             {movie.description}
           </div>
-          <Box>
-            <Button variant="contained" className={classes.watchBtn}>
-              Watch movie
-            </Button>
-          </Box>
         </Box>
       </main>
     </Container>
