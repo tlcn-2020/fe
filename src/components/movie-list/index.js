@@ -32,36 +32,39 @@ const useStyles = makeStyles((theme) => ({
 const MovieList = ({ movies = [], history }) => {
   //HOOK
   const classes = useStyles();
-
   return (
     <Masonry>
-      {movies.map((movie) => (
-        <Card
-          key={movie["_id"]}
-          className={classes.movie}
-          onClick={() => {
-            history.push(`/search-detail/${movie["_id"]}`);
-          }}
-        >
-          <CardHeader subheader={movie.relases} title={movie.name} />
-          <Rating
-            max={10}
-            value={parseInt(movie.imdb) || 0}
-            readOnly
-            name="rating"
-          />
-          <CardMedia
-            title={movie.name}
-            image={
-              movie.image || process.env.PUBLIC_URL + "/images/placeholder.JPG"
-            }
-            className={classes.media}
-          />
-          <CardContent>
-            {movie.description.length ? movie.description : "No descriptions"}
-          </CardContent>
-        </Card>
-      ))}
+      {movies.length > 0 &&
+        movies.map((movie) => (
+          <Card
+            key={movie["_id"]}
+            className={classes.movie}
+            onClick={() => {
+              history.push(`/search-detail/${movie["_id"]}`);
+            }}
+          >
+            <CardHeader subheader={movie.relases} title={movie.name} />
+            <Rating
+              max={10}
+              value={parseInt(movie.imdb) || 0}
+              readOnly
+              name="rating"
+            />
+            <CardMedia
+              title={movie.name}
+              image={
+                movie.image ||
+                process.env.PUBLIC_URL + "/images/placeholder.JPG"
+              }
+              className={classes.media}
+            />
+            <CardContent>
+              {movie?.description?.length
+                ? movie?.description
+                : "No descriptions"}
+            </CardContent>
+          </Card>
+        ))}
     </Masonry>
   );
 };

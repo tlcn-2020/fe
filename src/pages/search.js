@@ -57,7 +57,7 @@ const Search = ({ location, history }) => {
           Search results for: {search} ({movies.length})
         </Typography>
 
-        {search.length > 0 && <MovieList movies={movies} history={history} />}
+        {search.length > 0 && <MovieList movies={movies||[]} history={history} />}
       </main>
     </Container>
   );

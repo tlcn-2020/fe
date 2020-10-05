@@ -76,7 +76,6 @@ function SearchInput({
       setMovies(res.data);
       onChangeMovie && onChangeMovie(res.data);
     }
-
   }, [search]);
 
   const handleChange = useCallback((e) => {
