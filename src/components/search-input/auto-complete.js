@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useMemo } from "react";
+import Image from "material-ui-image";
 import {
   makeStyles,
   fade,
@@ -6,7 +7,6 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  Avatar,
 } from "@material-ui/core";
 import MOVIES_DATA from "../../data/movies";
 import { useHistory } from "react-router-dom";
@@ -32,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: fade(theme.palette.common.black, 0.05),
     },
   },
+  movieImage: {
+    width: 40,
+    height: 40,
+  },
 }));
 
 const MyAutoComplete = ({ search }) => {
@@ -40,26 +44,32 @@ const MyAutoComplete = ({ search }) => {
   const history = useHistory();
 
   //FUNCTION
-  const filterMovies = MOVIES_DATA.filter((movie) =>
-    movie.title.toLowerCase().includes(search.toLowerCase())
+  const filterMovies = useMemo(
+    () =>
+      MOVIES_DATA.filter((movie) =>
+        movie.name.toLowerCase().includes(search.toLowerCase())
+      ),
+    [search]
   );
   return (
     <List className={classes.container}>
       {filterMovies.length > 0 ? (
         filterMovies.map((movie) => (
           <ListItem
-            key={movie.title}
+            key={movie["_id"]}
             className={classes.movieItem}
             onClick={() => {
-              history.push(`/search-detail/${movie.id}`);
+              history.push(`/search-detail/${movie["_id"]}`);
             }}
           >
-            <ListItemIcon>
-              <Avatar src={movie.posterurl} alt={movie.title}>
-                {movie.title}
-              </Avatar>
+            <ListItemIcon className={classes.movieImage}>
+              <Image
+                src={movie.image}
+                alt={movie.name}
+                imageStyle={{ borderRadius: "50%", width: 40, height: 40 }}
+              />
             </ListItemIcon>
-            <ListItemText>{movie.title}</ListItemText>
+            <ListItemText>{movie.name}</ListItemText>
           </ListItem>
         ))
       ) : (

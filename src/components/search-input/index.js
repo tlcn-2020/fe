@@ -63,7 +63,7 @@ function SearchInput({ value = "", onChange, onKeyDown, styleProp }) {
     useCallback(() => {
       onChange && onChange(search);
     }),
-    [500]
+    [1000]
   );
   useEffect(() => {
     callOuterOnChange();

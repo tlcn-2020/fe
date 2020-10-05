@@ -5,23 +5,23 @@ import {
   CardMedia,
   makeStyles,
 } from "@material-ui/core";
-import React from "react";
+import React, { useMemo } from "react";
 import MOVIES_DATA from "../../data/movies";
 import { Rating } from "@material-ui/lab";
 import Masonry from "react-masonry-component";
 
 const useStyles = makeStyles((theme) => ({
   movie: {
-    width: "20%",
+    width: `calc(100% / 5)`,
     margin: theme.spacing(2, 0),
     padding: theme.spacing(1),
     transition: "transform 0.5s ease",
     cursor: "pointer",
     "&:hover": {
-      transform: "scale(1.1)",
+      transform: "scale(1.05)",
     },
     [theme.breakpoints.down("sm")]: {
-      width: "30%",
+      width: `calc(100% / 3)`,
     },
   },
   media: {
@@ -33,32 +33,40 @@ const useStyles = makeStyles((theme) => ({
 const MovieList = ({ search, history }) => {
   //HOOK
   const classes = useStyles();
-  const filterMovies = MOVIES_DATA.filter((movie) =>
-    movie.title.toLowerCase().includes(search.toLowerCase())
+  const filterMovies = useMemo(
+    () =>
+      MOVIES_DATA.filter((movie) =>
+        movie.name.toLowerCase().includes(search.toLowerCase())
+      ),
+    [search]
   );
 
   return (
     <Masonry>
       {filterMovies.map((movie) => (
         <Card
-          key={movie.title}
+          key={movie["_id"]}
           className={classes.movie}
           onClick={() => {
-            history.push(`/search-detail/${movie.id}`);
+            history.push(`/search-detail/${movie["_id"]}`);
           }}
         >
-          <CardHeader subheader={movie.releaseDate} title={movie.title} />
-          <Rating value={2} disabled name="rating" />
+          <CardHeader subheader={movie.relases} title={movie.name} />
+          <Rating
+            max={10}
+            value={parseInt(movie.imdb) || 0}
+            disabled
+            name="rating"
+          />
           <CardMedia
-            title={movie.title}
+            title={movie.name}
             image={
-              movie.posterurl ||
-              process.env.PUBLIC_URL + "/images/placeholder.png"
+              movie.image || process.env.PUBLIC_URL + "/images/placeholder.png"
             }
             className={classes.media}
           />
           <CardContent>
-            {movie.storyline.length ? movie.storyline : "No descriptions"}
+            {movie.description.length ? movie.description : "No descriptions"}
           </CardContent>
         </Card>
       ))}

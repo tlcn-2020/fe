@@ -1,9 +1,16 @@
-import { Container, Typography, makeStyles, Box } from "@material-ui/core";
+import {
+  Container,
+  Typography,
+  makeStyles,
+  Box,
+  Button,
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import React from "react";
-import { indigo } from "@material-ui/core/colors";
+import { indigo, red } from "@material-ui/core/colors";
+import Image from "material-ui-image";
+import { isEmpty } from "lodash";
 import MOVIES_DATA from "../data/movies";
-import { Rating } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -19,11 +26,18 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: "none !important",
     },
   },
+  watchBtn: {
+    background: red[500],
+    color: "#fff",
+    "&:hover": {
+      background: red[700],
+    },
+  },
 }));
 
 function MovieDetail({ match }) {
   const movieId = match.params.movieId;
-  const movie = MOVIES_DATA.filter((movie) => movie.id === movieId)[0];
+  const movie = MOVIES_DATA.filter((movie) => movie["_id"] === movieId)[0];
   console.log(JSON.stringify(movie, null, 2));
   const classes = useStyles();
 
@@ -39,41 +53,50 @@ function MovieDetail({ match }) {
           <div className="movie-intro">
             <div
               className="image"
-              style={{ backgroundImage: `url(${movie.posterurl})` }}
+              style={{ backgroundImage: `url(${movie.image})` }}
             >
-              <img alt="movie poster" src={movie.posterurl} />
+              <Image
+                alt="movie poster"
+                src={movie.image}
+                style={{ height: "100%" }}
+              />
             </div>
             <div className="intro">
-              <h2 className="title">{movie.title}</h2>
+              <h2 className="title">{movie.name}</h2>
               <ul className="detail">
                 <li>
-                  Year: <span>{movie.year}</span>
+                  IDMB:{" "}
+                  <span>{isEmpty(movie.imdb) ? "Unknown" : movie.imdb}</span>
                 </li>
                 <li>
-                  Genres: <span>{movie.genres.join(",")}</span>
+                  Nation: <span>{movie.national}</span>
                 </li>
                 <li>
-                  Duration: <span>{movie.duration}</span>
+                  Genres:{" "}
+                  <span>{movie.categories.map((c) => c.name).join(", ")}</span>
+                </li>
+                <li>
+                  Release:
+                  <span>
+                    {" "}
+                    {!isEmpty(movie.relases) ? movie.relases : "Unknown"}
+                  </span>
+                </li>
+                <li>
+                  Duration: <span>{movie.time}</span>
                 </li>
               </ul>
-              <div className="rating">
-                <h2>Rating</h2>
-                <Rating
-                  name="rating"
-                  value={
-                    movie.ratings.reduce((s, v) => s + v, 0) /
-                    movie.ratings.length
-                  }
-                  max={10}
-                  disabled
-                />
-              </div>
             </div>
           </div>
           <div className="story-line">
-            <h2>Story Line</h2>
-            {movie.storyline}
+            <h2>Description</h2>
+            {movie.description}
           </div>
+          <Box>
+            <Button variant="contained" className={classes.watchBtn}>
+              Watch movie
+            </Button>
+          </Box>
         </Box>
       </main>
     </Container>

@@ -1,6 +1,6 @@
 import { Container, makeStyles, Typography } from "@material-ui/core";
 import { indigo } from "@material-ui/core/colors";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { Link } from "react-router-dom";
 import MovieList from "../components/movie-list";
 import SearchInput from "../components/search-input";
@@ -47,7 +47,11 @@ const Search = ({ location, history }) => {
         {search.length > 0 && (
           <Typography variant="h6">Search results for: {search}</Typography>
         )}
-        {search.length > 0 && <MovieList search={search} history={history} />}
+        {search.length > 0 && (
+          <Suspense fallback={<div>Loading...</div>}>
+            <MovieList search={search} history={history} />
+          </Suspense>
+        )}
       </main>
     </Container>
   );
