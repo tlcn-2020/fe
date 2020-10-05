@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import Image from "material-ui-image";
 import {
   makeStyles,
@@ -8,7 +8,6 @@ import {
   ListItemText,
   ListItemIcon,
 } from "@material-ui/core";
-import MOVIES_DATA from "../../data/movies";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,23 +37,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MyAutoComplete = ({ search }) => {
+const MyAutoComplete = ({ movies = [] }) => {
   //HOOK
   const classes = useStyles();
   const history = useHistory();
 
   //FUNCTION
-  const filterMovies = useMemo(
-    () =>
-      MOVIES_DATA.filter((movie) =>
-        movie.name.toLowerCase().includes(search.toLowerCase())
-      ),
-    [search]
-  );
+
   return (
     <List className={classes.container}>
-      {filterMovies.length > 0 ? (
-        filterMovies.map((movie) => (
+      {movies.length > 0 ? (
+        movies.map((movie) => (
           <ListItem
             key={movie["_id"]}
             className={classes.movieItem}

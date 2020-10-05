@@ -5,8 +5,7 @@ import {
   CardMedia,
   makeStyles,
 } from "@material-ui/core";
-import React, { useMemo } from "react";
-import MOVIES_DATA from "../../data/movies";
+import React from "react";
 import { Rating } from "@material-ui/lab";
 import Masonry from "react-masonry-component";
 
@@ -30,20 +29,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MovieList = ({ search, history }) => {
+const MovieList = ({ movies = [], history }) => {
   //HOOK
   const classes = useStyles();
-  const filterMovies = useMemo(
-    () =>
-      MOVIES_DATA.filter((movie) =>
-        movie.name.toLowerCase().includes(search.toLowerCase())
-      ),
-    [search]
-  );
 
   return (
     <Masonry>
-      {filterMovies.map((movie) => (
+      {movies.map((movie) => (
         <Card
           key={movie["_id"]}
           className={classes.movie}

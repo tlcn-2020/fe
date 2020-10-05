@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
 function MovieDetail({ match }) {
   const movieId = match.params.movieId;
   const movie = MOVIES_DATA.filter((movie) => movie["_id"] === movieId)[0];
-  console.log(JSON.stringify(movie, null, 2));
   const classes = useStyles();
 
   return (
@@ -49,55 +48,61 @@ function MovieDetail({ match }) {
         </Typography>
       </header>
       <main>
-        <Box className="movie-container">
-          <div className="movie-intro">
-            <div
-              className="image"
-              style={{ backgroundImage: `url(${movie.image})` }}
-            >
-              <Image
-                alt="movie poster"
-                src={movie.image}
-                style={{ height: "100%" }}
-              />
-              <Box position="absolute" bottom={0} margin={0.5}>
-                <Button variant="contained" className={classes.watchBtn}>
-                  Watch movie
-                </Button>
-              </Box>
+        {movie ? (
+          <Box className="movie-container">
+            <div className="movie-intro">
+              <div
+                className="image"
+                style={{ backgroundImage: `url(${movie.image})` }}
+              >
+                <Image
+                  alt="movie poster"
+                  src={movie.image}
+                  style={{ height: "100%" }}
+                />
+                <Box position="absolute" bottom={0} margin={0.5}>
+                  <Button variant="contained" className={classes.watchBtn}>
+                    Watch movie
+                  </Button>
+                </Box>
+              </div>
+              <div className="intro">
+                <h2 className="title">{movie.name}</h2>
+                <ul className="detail">
+                  <li>
+                    IDMB:{" "}
+                    <span>{isEmpty(movie.imdb) ? "Unknown" : movie.imdb}</span>
+                  </li>
+                  <li>
+                    Nation: <span>{movie.national}</span>
+                  </li>
+                  <li>
+                    Genres:{" "}
+                    <span>
+                      {movie.categories.map((c) => c.name).join(", ")}
+                    </span>
+                  </li>
+                  <li>
+                    Release:
+                    <span>
+                      {" "}
+                      {!isEmpty(movie.relases) ? movie.relases : "Unknown"}
+                    </span>
+                  </li>
+                  <li>
+                    Duration: <span>{movie.time}</span>
+                  </li>
+                </ul>
+              </div>
             </div>
-            <div className="intro">
-              <h2 className="title">{movie.name}</h2>
-              <ul className="detail">
-                <li>
-                  IDMB:{" "}
-                  <span>{isEmpty(movie.imdb) ? "Unknown" : movie.imdb}</span>
-                </li>
-                <li>
-                  Nation: <span>{movie.national}</span>
-                </li>
-                <li>
-                  Genres:{" "}
-                  <span>{movie.categories.map((c) => c.name).join(", ")}</span>
-                </li>
-                <li>
-                  Release:
-                  <span>
-                    {" "}
-                    {!isEmpty(movie.relases) ? movie.relases : "Unknown"}
-                  </span>
-                </li>
-                <li>
-                  Duration: <span>{movie.time}</span>
-                </li>
-              </ul>
+            <div className="story-line">
+              <h2>Description</h2>
+              {movie.description}
             </div>
-          </div>
-          <div className="story-line">
-            <h2>Description</h2>
-            {movie.description}
-          </div>
-        </Box>
+          </Box>
+        ) : (
+          <Typography>No movie detail found</Typography>
+        )}
       </main>
     </Container>
   );

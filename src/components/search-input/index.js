@@ -2,9 +2,10 @@
 import { makeStyles, InputBase, fade, Box } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { indigo } from "@material-ui/core/colors";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useState } from "react";
 import { debounce } from "lodash";
 import MyAutoComplete from "./auto-complete";
+import { postRequest } from "../../api";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -49,9 +50,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SearchInput({ value = "", onChange, onKeyDown, styleProp }) {
+function SearchInput({
+  value = "",
+  onChange,
+  onKeyDown,
+  styleProp,
+  onChangeMovie,
+}) {
   //STATE
   const [search, setSearch] = useState(value);
+  const [movies, setMovies] = useState([]);
   const [didSearch, setDidSearch] = useState(false);
   const [showAutocomplete, setShowAutocomplete] = useState(true);
 
@@ -66,6 +74,15 @@ function SearchInput({ value = "", onChange, onKeyDown, styleProp }) {
     [search]
   );
 
+  const searchFunc = useCallback(async () => {
+    const res = await postRequest("/search", { name: search });
+    if (!res.hasError) {
+      setMovies(res.data);
+      onChangeMovie && onChangeMovie(res.data);
+    }
+    console.log(res);
+  }, [search]);
+
   const handleChange = useCallback((e) => {
     setSearch(e.target.value);
     setDidSearch(true);
@@ -75,6 +92,7 @@ function SearchInput({ value = "", onChange, onKeyDown, styleProp }) {
   const classes = useStyles(styleProp);
   useEffect(() => {
     callOuterOnChange();
+    searchFunc();
   }, [search]);
 
   useEffect(() => {
@@ -120,7 +138,9 @@ function SearchInput({ value = "", onChange, onKeyDown, styleProp }) {
         />
       </div>
       {search.length > 0 && didSearch && showAutocomplete && (
-        <MyAutoComplete search={search} />
+        <Suspense fallback={<div>...</div>}>
+          <MyAutoComplete movies={movies} />
+        </Suspense>
       )}
     </Box>
   );

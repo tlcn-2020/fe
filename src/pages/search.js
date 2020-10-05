@@ -1,6 +1,6 @@
 import { Container, makeStyles, Typography } from "@material-ui/core";
 import { indigo } from "@material-ui/core/colors";
-import React, { Suspense, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import MovieList from "../components/movie-list";
 import SearchInput from "../components/search-input";
@@ -27,6 +27,7 @@ const Search = ({ location, history }) => {
 
   //STATE
   const [search, setSearch] = useState(query);
+  const [movies, setMovies] = useState([]);
   //HOOK
   const classes = useStyles();
 
@@ -38,20 +39,20 @@ const Search = ({ location, history }) => {
         </Typography>
         <SearchInput
           value={search}
+          onChangeMovie={(movies) => {
+            setMovies(movies);
+          }}
           onChange={(value) => {
             setSearch(value);
           }}
         />
       </header>
       <main>
-        {search.length > 0 && (
-          <Typography variant="h6">Search results for: {search}</Typography>
-        )}
-        {search.length > 0 && (
-          <Suspense fallback={<div>Loading...</div>}>
-            <MovieList search={search} history={history} />
-          </Suspense>
-        )}
+        <Typography variant="h6">
+          Search results for: {search} ({movies.length})
+        </Typography>
+
+        {search.length > 0 && <MovieList movies={movies} history={history} />}
       </main>
     </Container>
   );
