@@ -53,7 +53,7 @@ const MovieList = ({ movies = [], history }) => {
           <CardMedia
             title={movie.name}
             image={
-              movie.image || process.env.PUBLIC_URL + "/images/placeholder.png"
+              movie.image || process.env.PUBLIC_URL + "/images/placeholder.JPG"
             }
             className={classes.media}
           />

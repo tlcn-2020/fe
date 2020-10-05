@@ -23,3 +23,18 @@ export async function postRequest(url, body) {
     };
   }
 }
+
+export async function getRequest(url) {
+  try {
+    const res = await myAxios.get(url);
+    return {
+      hasError: false,
+      data: res.data,
+    };
+  } catch (err) {
+    return {
+      hasError: true,
+      data: JSON.stringify(err),
+    };
+  }
+}

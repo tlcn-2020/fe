@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Container,
   Typography,
@@ -6,10 +7,11 @@ import {
   Button,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { indigo, red } from "@material-ui/core/colors";
 import Image from "material-ui-image";
 import { isEmpty } from "lodash";
+import { getRequest } from "../api";
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -35,10 +37,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function MovieDetail({ match }) {
-  //const movieId = match.params.movieId;
-  const movie = null;
-  console.log(movie);
+  const movieId = match.params.movieId;
+  //STATE
+  const [movie, setMovie] = useState(null);
+
+  //HOOK
   const classes = useStyles();
+  useEffect(() => {
+    getRequest(`/movie-detail/${movieId}`).then((res) => {
+      if (!res.hasError) {
+        setMovie(res.data);
+      }
+    });
+  }, []);
 
   return (
     <Container>
