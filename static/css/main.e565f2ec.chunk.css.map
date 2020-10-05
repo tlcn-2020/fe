@@ -1,0 +1,1 @@
+{"version":3,"sources":["app.scss"],"names":[],"mappings":"AAAA,KACE,kCAAoC,CACpC,eAAgB","file":"main.e565f2ec.chunk.css","sourcesContent":["body {\n  background-color: #f0f2f5 !important;\n  min-width: 500px;\n}\n"]}
