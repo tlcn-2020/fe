@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     padding: theme.spacing(1),
     borderBottom: "1px solid #eee",
-    background:theme.palette.background.paper,
-    marginBottom:'0.5rem'
+    background: theme.palette.background.paper,
+    marginBottom: "0.5rem",
   },
   title: {
     color: indigo[500],
@@ -37,8 +37,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   watchBtn: {
+    display: "block",
     background: red[500],
     color: "#fff",
+    margin: "auto",
     "&:hover": {
       background: red[700],
     },
@@ -69,7 +71,6 @@ function MovieDetail({ match }) {
     });
   }, []);
 
-
   return (
     <Container>
       <header className={classes.header}>
@@ -97,6 +98,7 @@ function MovieDetail({ match }) {
                 }}
                 marginRight={2}
                 width="30%"
+                position="relative"
               >
                 <Image
                   alt="movie poster"
@@ -106,8 +108,8 @@ function MovieDetail({ match }) {
                 <Box
                   position="absolute"
                   bottom={0}
-                  marginBottom={3}
-                  marginLeft={1}
+                  marginBottom={2}
+                  width="100%"
                 >
                   <Button variant="contained" className={classes.watchBtn}>
                     Watch movie
@@ -137,7 +139,7 @@ function MovieDetail({ match }) {
                             style={{ marginLeft: "0.5rem" }}
                           />
                         ) : (
-                          <span style={{marginLeft:'0.5rem'}}>Unknown</span>
+                          <span style={{ marginLeft: "0.5rem" }}>Unknown</span>
                         )}
                       </Box>
                     </ListItemText>
@@ -185,12 +187,8 @@ function MovieDetail({ match }) {
                 </List>
               </Box>
             </Box>
-            <Divider/>
-            <Box
-              style={{ background: "#fff" }}
-              padding={2}
-          
-            >
+            <Divider />
+            <Box style={{ background: "#fff" }} padding={2}>
               <Typography variant="h4">Actors</Typography>
               <Box
                 display="flex"
@@ -208,7 +206,7 @@ function MovieDetail({ match }) {
                       alignItems="center"
                       minWidth={120}
                     >
-                      <Avatar src={artist.image} alt={artist["first_name"]}/>
+                      <Avatar src={artist.image} alt={artist["first_name"]} />
                       <Typography variant="subtitle1">
                         {artist["first_name"]}
                       </Typography>
@@ -216,7 +214,7 @@ function MovieDetail({ match }) {
                   ))}
               </Box>
             </Box>
-            <Divider/>
+            <Divider />
             <Box style={{ background: "#fff" }} padding={2}>
               <Typography variant="h4">Description</Typography>
               <Typography paragraph> {movie.description}</Typography>
