@@ -7,8 +7,10 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
+  CircularProgress,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import { indigo } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -37,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MyAutoComplete = ({ movies = [] }) => {
+const MyAutoComplete = ({ movies = [], isSearching = true }) => {
   //HOOK
   const classes = useStyles();
   const history = useHistory();
@@ -46,7 +48,13 @@ const MyAutoComplete = ({ movies = [] }) => {
 
   return (
     <List className={classes.container}>
-      {movies.length > 0 ? (
+      {isSearching ? (
+        <CircularProgress
+          color="secondary"
+          size={40}
+          style={{ margin: "auto", color: indigo[500], display: "block" }}
+        />
+      ) : movies.length > 0 ? (
         movies.map((movie) => (
           <ListItem
             key={movie["_id"]}

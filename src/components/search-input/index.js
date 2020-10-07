@@ -2,7 +2,7 @@
 import { makeStyles, InputBase, fade, Box } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { indigo } from "@material-ui/core/colors";
-import React, { Suspense, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import MyAutoComplete from "./auto-complete";
 import { postRequest } from "../../api";
 
@@ -61,7 +61,7 @@ function SearchInput({
   const [movies, setMovies] = useState([]);
   const [didSearch, setDidSearch] = useState(false);
   const [showAutocomplete, setShowAutocomplete] = useState(true);
-
+  const [isSearching, setIsSearching] = useState(false);
   //FUNCTION
   const turnOffAutoComplete = useCallback(() => {
     setShowAutocomplete(false);
@@ -71,12 +71,14 @@ function SearchInput({
   }, [search]);
 
   const searchFunc = useCallback(async () => {
-    const res = await postRequest("/search", { name: search });
+    setIsSearching(true);
+    const res = await postRequest("/search", { q: search });
     if (!res.hasError) {
       setMovies(res.data);
       onChangeMovie && onChangeMovie(res.data);
     }
-  }, [search]);
+    setIsSearching(false);
+  });
 
   const handleChange = useCallback((e) => {
     setSearch(e.target.value);
@@ -107,17 +109,14 @@ function SearchInput({
     >
       <div
         className={`${classes.search} ${
-          search.length > 0 &&
-          didSearch &&
-          showAutocomplete &&
-          classes.hasSearchValue
+          didSearch && showAutocomplete && classes.hasSearchValue
         }`}
       >
         <div className={classes.searchIcon}>
           <SearchIcon />
         </div>
         <InputBase
-          placeholder="Search…"
+          placeholder="Enter movie name, actor, description,..."
           classes={{
             root: classes.inputRoot,
             input: classes.inputInput,
@@ -132,10 +131,8 @@ function SearchInput({
           }}
         />
       </div>
-      {search.length > 0 && didSearch && showAutocomplete && (
-        <Suspense fallback={<div>...</div>}>
-          <MyAutoComplete movies={movies} />
-        </Suspense>
+      {didSearch && showAutocomplete && (
+        <MyAutoComplete movies={movies} isSearching={isSearching} />
       )}
     </Box>
   );

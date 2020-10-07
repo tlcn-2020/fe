@@ -188,6 +188,35 @@ function MovieDetail({ match }) {
               </Box>
             </Box>
             <Divider />
+
+            <Box style={{ background: "#fff" }} padding={2}>
+              <Typography variant="h4">Directors</Typography>
+              <Box
+                display="flex"
+                className={classes.actorList}
+                flexDirection="column"
+                flexWrap="wrap"
+              >
+                {movie.directors.length > 0 &&
+                  movie.directors.map((director, index) => (
+                    <Box
+                      key={index}
+                      margin="0.5rem"
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                      minWidth={120}
+                    >
+                      <Avatar src={director.image} alt={director["name"]} />
+                      <Typography variant="subtitle1">
+                        {director["name"]}
+                      </Typography>
+                    </Box>
+                  ))}
+              </Box>
+            </Box>
+
+            <Divider />
             <Box style={{ background: "#fff" }} padding={2}>
               <Typography variant="h4">Actors</Typography>
               <Box
