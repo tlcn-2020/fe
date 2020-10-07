@@ -1,5 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Container, makeStyles, Typography } from "@material-ui/core";
+import {
+  CircularProgress,
+  Container,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 import { indigo } from "@material-ui/core/colors";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -29,6 +34,8 @@ const Search = ({ location, history }) => {
   //STATE
   const [search, setSearch] = useState(query);
   const [movies, setMovies] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+
   //HOOK
   const classes = useStyles();
 
@@ -50,6 +57,7 @@ const Search = ({ location, history }) => {
           onChange={(value) => {
             setSearch(value);
           }}
+          setIsSearching={setIsSearching}
         />
       </header>
       <main>
@@ -57,7 +65,17 @@ const Search = ({ location, history }) => {
           Search results for: {search} ({movies.length})
         </Typography>
 
-        {search.length > 0 && <MovieList movies={movies||[]} history={history} />}
+        {isSearching ? (
+          <CircularProgress
+            color="secondary"
+            size={40}
+            style={{ margin: "auto", color: indigo[500], display: "block" }}
+          />
+        ) : movies.length === 0 ? (
+          <Typography variant="h4">No movies found</Typography>
+        ) : (
+          <MovieList movies={movies || []} history={history} />
+        )}
       </main>
     </Container>
   );

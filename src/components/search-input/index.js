@@ -55,6 +55,7 @@ function SearchInput({
   onKeyDown,
   styleProp,
   onChangeMovie,
+  setIsSearching: setOuterIsSearching,
 }) {
   //STATE
   const [search, setSearch] = useState(value);
@@ -62,6 +63,7 @@ function SearchInput({
   const [didSearch, setDidSearch] = useState(false);
   const [showAutocomplete, setShowAutocomplete] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
+
   //FUNCTION
   const turnOffAutoComplete = useCallback(() => {
     setShowAutocomplete(false);
@@ -91,6 +93,10 @@ function SearchInput({
     callOuterOnChange();
     searchFunc();
   }, [search]);
+
+  useEffect(() => {
+    setOuterIsSearching(isSearching);
+  }, [isSearching]);
 
   useEffect(() => {
     window.addEventListener("click", turnOffAutoComplete);
