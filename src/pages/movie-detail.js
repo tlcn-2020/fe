@@ -44,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       background: red[700],
     },
+    "& a": {
+      textDecoration: "none !important",
+      color: "#fff !important",
+    },
   },
   actorList: {
     overflowX: "auto",
@@ -111,8 +115,15 @@ function MovieDetail({ match }) {
                   marginBottom={2}
                   width="100%"
                 >
-                  <Button variant="contained" className={classes.watchBtn}>
-                    Watch movie
+                  <Button variant="contained" className={classes.watchBtn} c>
+                    <a
+                      href={`http://www.phimmoizz.net/phim/${movieId}/xem-phim.html`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {" "}
+                      Watch movie
+                    </a>
                   </Button>
                 </Box>
               </Box>

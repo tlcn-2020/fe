@@ -95,7 +95,7 @@ function SearchInput({
   }, [search]);
 
   useEffect(() => {
-    setOuterIsSearching(isSearching);
+    setOuterIsSearching && setOuterIsSearching(isSearching);
   }, [isSearching]);
 
   useEffect(() => {
