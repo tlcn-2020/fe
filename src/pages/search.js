@@ -1,22 +1,46 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
+  Box,
   CircularProgress,
   Container,
   makeStyles,
+  Select,
   Typography,
+  MenuItem,
 } from "@material-ui/core";
 import { indigo } from "@material-ui/core/colors";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { AppContext } from "../App";
 import MovieList from "../components/movie-list";
 import SearchInput from "../components/search-input";
+
+const nations = [
+  "Việt Nam",
+  "Trung Quốc",
+  "Mỹ",
+  "Hàn Quốc",
+  "Nhật Bản",
+  "Hồng Kong",
+  "Ấn Độ",
+  "Thái Lan",
+  "Pháp",
+  "Đài Loan",
+  "Úc",
+  "Canada",
+  "Anh",
+];
+
+const releaseYears = [2020, 2019, 2018, 2017, 2016, "Before 2016"];
 
 const useStyles = makeStyles((theme) => ({
   header: {
     display: "flex",
     alignItems: "center",
     padding: theme.spacing(1),
-    borderBottom: "1px solid #eee",
+    borderBottom: "1px solid #919191",
+    flexWrap: "wrap",
+    marginBottom: "1rem",
   },
   title: {
     color: indigo[500],
@@ -24,6 +48,10 @@ const useStyles = makeStyles((theme) => ({
     "& a": {
       textDecoration: "none !important",
     },
+  },
+  filterTitle: {
+    fontWeight: "bold",
+    fontSize: "1rem",
   },
 }));
 
@@ -35,14 +63,17 @@ const Search = ({ location, history }) => {
   const [search, setSearch] = useState(query);
   const [movies, setMovies] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
-
   //HOOK
   const classes = useStyles();
-
+  const { filter, setFilter } = useContext(AppContext);
   useEffect(() => {
     history.push(`/search?q=${search}`);
   }, [search]);
 
+  //FUNCTION
+  const handleChange = (path, e) => {
+    setFilter((state) => ({ ...state, [path]: e.target.value }));
+  };
   return (
     <Container>
       <header className={classes.header}>
@@ -58,7 +89,61 @@ const Search = ({ location, history }) => {
             setSearch(value);
           }}
           setIsSearching={setIsSearching}
+          filter={filter}
         />
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          width="100%"
+          margin="2rem 0"
+        >
+          <Box
+            width="calc(100% / 5)"
+            display="flex"
+            flexDirection="column"
+            marginRight="1rem"
+          >
+            <Typography variant="span" className={classes.filterTitle}>
+              Nations:
+            </Typography>
+            <Select
+              value={filter.nation}
+              onChange={(e) => {
+                handleChange("nation", e);
+              }}
+            >
+              <MenuItem value="1">Select a nation</MenuItem>
+              {nations.map((nation) => (
+                <MenuItem key={nation} value={nation}>
+                  {nation}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
+          <Box
+            width="calc(100% / 5)"
+            display="flex"
+            flexDirection="column"
+            marginRight="1rem"
+          >
+            <Typography variant="span" className={classes.filterTitle}>
+              Release Year:
+            </Typography>
+            <Select
+              value={filter.year}
+              onChange={(e) => {
+                handleChange("year", e);
+              }}
+            >
+              <MenuItem value="1">Select a year</MenuItem>
+              {releaseYears.map((year) => (
+                <MenuItem key={year} value={year}>
+                  {year}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
+        </Box>
       </header>
       <main>
         <Typography variant="h6">

@@ -56,6 +56,7 @@ function SearchInput({
   styleProp,
   onChangeMovie,
   setIsSearching: setOuterIsSearching,
+  filter,
 }) {
   //STATE
   const [search, setSearch] = useState(value);
@@ -74,7 +75,7 @@ function SearchInput({
 
   const searchFunc = useCallback(async () => {
     setIsSearching(true);
-    const res = await postRequest("/search", { q: search });
+    const res = await postRequest("/search", { q: search, ...filter });
     if (!res.hasError) {
       setMovies(res.data);
       onChangeMovie && onChangeMovie(res.data);
@@ -97,6 +98,10 @@ function SearchInput({
   useEffect(() => {
     setOuterIsSearching && setOuterIsSearching(isSearching);
   }, [isSearching]);
+
+  useEffect(() => {
+    searchFunc();
+  }, [filter]);
 
   useEffect(() => {
     window.addEventListener("click", turnOffAutoComplete);

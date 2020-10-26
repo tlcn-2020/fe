@@ -42,7 +42,7 @@ const MovieList = ({ movies = [], history }) => {
               history.push(`/search-detail/${movie["_id"]}`);
             }}
           >
-            <CardHeader subheader={movie.relases} title={movie.name} />
+            <CardHeader subheader={movie.time} title={movie.name} />
             <Rating
               max={10}
               value={parseInt(movie.imdb) || 0}
