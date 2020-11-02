@@ -7,8 +7,9 @@ import {
   Select,
   Typography,
   MenuItem,
+  Button,
 } from "@material-ui/core";
-import { indigo } from "@material-ui/core/colors";
+import { indigo, red } from "@material-ui/core/colors";
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../App";
@@ -31,7 +32,7 @@ const nations = [
   "Anh",
 ];
 
-const releaseYears = [2020, 2019, 2018, 2017, 2016, "Before 2016"];
+const releaseYears = [2020, 2019, 2018, 2017, 2016];
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -67,13 +68,25 @@ const Search = ({ location, history }) => {
   const classes = useStyles();
   const { filter, setFilter } = useContext(AppContext);
   useEffect(() => {
-    history.push(`/search?q=${search}`);
+    history.replace(`/search?q=${search}`);
   }, [search]);
 
   //FUNCTION
   const handleChange = (path, e) => {
     setFilter((state) => ({ ...state, [path]: e.target.value }));
   };
+
+  const handleClearFilters = () => {
+    setFilter({
+      year: "1",
+      nation: "1",
+    });
+  };
+
+  const shouldShowRemoveFilters = () => {
+    return Object.values(filter).some((f) => f !== "1");
+  };
+
   return (
     <Container>
       <header className={classes.header}>
@@ -103,7 +116,7 @@ const Search = ({ location, history }) => {
             flexDirection="column"
             marginRight="1rem"
           >
-            <Typography variant="span" className={classes.filterTitle}>
+            <Typography variant="subtitle2" className={classes.filterTitle}>
               Nations:
             </Typography>
             <Select
@@ -126,7 +139,7 @@ const Search = ({ location, history }) => {
             flexDirection="column"
             marginRight="1rem"
           >
-            <Typography variant="span" className={classes.filterTitle}>
+            <Typography variant="subtitle1" className={classes.filterTitle}>
               Release Year:
             </Typography>
             <Select
@@ -144,6 +157,15 @@ const Search = ({ location, history }) => {
             </Select>
           </Box>
         </Box>
+        {shouldShowRemoveFilters() && (
+          <Button
+            variant="contained"
+            style={{ background: red[500], color: "white" }}
+            onClick={handleClearFilters}
+          >
+            Clear filters
+          </Button>
+        )}
       </header>
       <main>
         <Typography variant="h6">

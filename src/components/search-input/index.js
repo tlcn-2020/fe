@@ -2,9 +2,10 @@
 import { makeStyles, InputBase, fade, Box } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { indigo } from "@material-ui/core/colors";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import MyAutoComplete from "./auto-complete";
 import { postRequest } from "../../api";
+import { AppContext } from "../../App";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -65,6 +66,8 @@ function SearchInput({
   const [showAutocomplete, setShowAutocomplete] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
 
+  const { setFilter } = useContext(AppContext);
+
   //FUNCTION
   const turnOffAutoComplete = useCallback(() => {
     setShowAutocomplete(false);
@@ -84,6 +87,10 @@ function SearchInput({
   });
 
   const handleChange = useCallback((e) => {
+    setFilter({
+      year: "1",
+      nation: "1",
+    });
     setSearch(e.target.value);
     setDidSearch(true);
   });

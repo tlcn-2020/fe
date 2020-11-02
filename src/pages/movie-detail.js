@@ -115,7 +115,7 @@ function MovieDetail({ match }) {
                   marginBottom={2}
                   width="100%"
                 >
-                  <Button variant="contained" className={classes.watchBtn} c>
+                  <Button variant="contained" className={classes.watchBtn}>
                     <a
                       href={`http://www.phimmoizz.net/phim/${movieId}/xem-phim.html`}
                       target="_blank"
