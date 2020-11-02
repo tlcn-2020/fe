@@ -87,10 +87,10 @@ function SearchInput({
   });
 
   const handleChange = useCallback((e) => {
-    setFilter({
-      year: "1",
-      nation: "1",
-    });
+    // setFilter({
+    //   year: "1",
+    //   nation: "1",
+    // });
     setSearch(e.target.value);
     setDidSearch(true);
   });
